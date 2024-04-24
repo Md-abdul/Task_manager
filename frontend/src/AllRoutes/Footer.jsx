@@ -10,7 +10,7 @@ export const Footer = () => {
       py={4}
       px={6}
     //   position="fixed"
-    //   bottom={0}
+    //   bottom={0}///////////////
       width="100%"
     >
       <Box>
