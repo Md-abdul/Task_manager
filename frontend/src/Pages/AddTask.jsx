@@ -142,7 +142,7 @@ export const AddTask = () => {
           </form>
         </VStack>
       </Box>
-      <ToastContainer onClose={handleToastClose} /> {/* Pass handleToastClose function to onClose prop */}
+      <ToastContainer onClose={handleToastClose} /> 
     </Center>
   );
 };
