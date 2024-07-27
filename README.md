@@ -2,6 +2,12 @@
 
 A comprehensive project management application developed using the MERN stack. This app allows users to create, edit, delete, and manage their tasks privately. Each user can only access and modify their own tasks. The application uses JSON Web Tokens (JWT) for authentication and Bcrypt for password hashing, ensuring secure access and data protection.
 
+Frontend Deploy link - https://project-manager1.netlify.app/
+
+Backend Deploy link - https://project-manager-ue6i.onrender.com/
+
+
+
 ## 🌟 Features
 
 - User Authentication: Secure login and registration using JWT and Bcrypt.
@@ -29,7 +35,9 @@ A comprehensive project management application developed using the MERN stack. T
 - Bcrypt.js for password hashing
 
 
-🗂️ Folder Structure
+
+
+# 🗂️ Folder Structure
 
 ## Backend
       backend/
