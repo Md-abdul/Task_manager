@@ -84,4 +84,4 @@ To get a local copy up and running, follow these steps:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/Md-abdul/cognisite-assignment.git
+   git clone https://github.com/Md-abdul/Task_manager.git
