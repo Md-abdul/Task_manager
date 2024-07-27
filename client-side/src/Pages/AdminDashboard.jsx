@@ -13,7 +13,9 @@ const Dashboard = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:9090/admin/all-tasks");
+      const response = await axios.get(
+        "https://project-manager-ue6i.onrender.com/admin/all-tasks"
+      );
       setTasks(response.data);
     } catch (err) {
       console.error("Error fetching tasks:", err);
@@ -25,7 +27,9 @@ const Dashboard = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:9090/admin/all-users");
+      const response = await axios.get(
+        "https://project-manager-ue6i.onrender.com/admin/all-users"
+      );
       setUsers(response.data);
     } catch (err) {
       console.error("Error fetching tasks:", err);
@@ -142,7 +146,7 @@ const Dashboard = () => {
           ))}
         </div>
         <hr className="border-t border-gray-800 my-4 mt-20" />
-        <h1 className="text-3xl font-bold mt-10 mb-10">All Task</h1>
+        <h1 className="text-3xl font-bold mt-10 mb-10">All Employee </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {users.map((user) => (
             <div key={user._id} className="bg-white p-4 rounded-lg shadow-md">

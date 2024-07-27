@@ -17,7 +17,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:9090/users/login", {
+      const response = await axios.post("https://project-manager-ue6i.onrender.com/users/login", {
         email,
         pass,
       });

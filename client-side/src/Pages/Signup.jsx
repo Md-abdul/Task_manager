@@ -16,7 +16,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:9090/users/register",
+        "https://project-manager-ue6i.onrender.com/users/register",
         {
           name,
           email,

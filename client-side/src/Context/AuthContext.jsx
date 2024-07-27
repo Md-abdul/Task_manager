@@ -23,7 +23,7 @@ function AuthProvider({ children }) {
   const fetchTasks = async (token) => {
     setTaskLoading(true);
     try {
-      const response = await axios.get("http://localhost:9090/task/get", {
+      const response = await axios.get("https://project-manager-ue6i.onrender.com/task/get", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -62,7 +62,7 @@ function AuthProvider({ children }) {
     if (window.confirm("Are you sure you want to delete this task?")) {
       setTaskLoading(true);
       try {
-        await axios.delete(`http://localhost:9090/task/delete/${taskId}`, {
+        await axios.delete(`https://project-manager-ue6i.onrender.com/task/delete/${taskId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -82,7 +82,7 @@ function AuthProvider({ children }) {
     setTaskLoading(true);
     try {
       const response = await axios.put(
-        `http://localhost:9090/task/update/${taskId}`,
+        `https://project-manager-ue6i.onrender.com/task/update/${taskId}`,
         updatedTask,
         {
           headers: {
@@ -104,7 +104,7 @@ function AuthProvider({ children }) {
     setTaskLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:9090/task/createtask",
+        "https://project-manager-ue6i.onrender.com/task/createtask",
         taskData,
         {
           headers: {
