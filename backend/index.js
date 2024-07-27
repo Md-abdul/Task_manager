@@ -12,13 +12,13 @@ app.use(express.json());
 
 require("dotenv").config();
 
-app.use("/admin", adminroutes);
-app.use("/users", userRouter);
-app.use("/task", router);
-
 app.use("/", (req, res) => {
   res.json({ msg: "welcom to task manager backend" });
 });
+
+app.use("/admin", adminroutes);
+app.use("/users", userRouter);
+app.use("/task", router);
 
 app.listen(9090, async () => {
   try {
