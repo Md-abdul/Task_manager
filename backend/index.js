@@ -7,8 +7,10 @@ const { route } = require("./router/task.route");
 const router = require("./router/task.route");
 const taskModel = require("./model/task.model");
 const adminroutes = require("./router/admin.route");
+const port = 5050
 app.use(cors());
 app.use(express.json());
+
 
 require("dotenv").config();
 
@@ -20,10 +22,12 @@ app.use("/admin", adminroutes);
 app.use("/users", userRouter);
 app.use("/task", router);
 
-app.listen(3020, async () => {
+
+
+app.listen(port || 5000, async () => {
   try {
     await connection;
-    console.log("Connection established port 3020");
+    console.log("Connection established port 5050");
   } catch (err) {
     console.log(err);
   }
