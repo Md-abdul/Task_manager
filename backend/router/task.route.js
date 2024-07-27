@@ -1,116 +1,75 @@
-// const express = require("express");
-// const taskRoute = express.Router();
-// const { taskModel } = require("../model/task.model");
-
-// taskRoute.post("/create", async (req, res) => {
-//   try {
-//     const note = new taskModel(req.body);
-//     await note.save();
-//     res.send({ msg: "New Task created successfully" });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
-
-// taskRoute.get("/", async (req, res) => {
-//   try {
-//     const users = await taskModel.find({ authorID: req.body.authorID });
-//     res.send(users);
-//   } catch (err) {
-//     console.log({ err: err.message });
-//   }
-// });
-
-// taskRoute.patch("/update/:taskID", async (req, res) => {
-//   const { taskID } = req.params;
-//   try {
-//     //------------------------------------------> ,authorID: req.body.authorID
-//     await taskModel.findByIdAndUpdate({ _id: taskID }, req.body);
-//     res.json({ msg: `The note with ${taskID} has been updated` });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
-
-// taskRoute.delete("/delete/:taskID", async (req, res) => {
-//   const { taskID } = req.params;
-//   try {
-//     //------------------------------------------> ,authorID: req.body.authorID
-//     await taskModel.findByIdAndDelete({ _id: taskID });
-//     res.json({ msg: `The note with ${taskID} has been deleted` });
-//   } catch (err) {
-//     console.log(err);
-//     res.send({ err: "Getting error " });
-//   }
-// });
-
-// module.exports = {
-//   taskRoute,
-// };
-
-
-
 const express = require("express");
-const taskRoute = express.Router();
+const router = express.Router();
 const { taskModel } = require("../model/task.model");
+const jwt = require("jsonwebtoken");
+const { userModel } = require("../model/user.model");
 
-taskRoute.post("/create", async (req, res) => {
+// Middleware 
+const authenticate = (req, res, next) => {
+  const token = req.header("Authorization").replace("Bearer ", "");
   try {
-    const task = new taskModel(req.body);
-    await task.save();
-    res.send({ msg: "New Task created successfully" });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "masaiII");
+    req.user = decoded; 
+    next();
   } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: "Internal Server Error" });
+    res.status(401).send({ message: "Authentication failed" });
   }
-});
-
-taskRoute.get("/:taskId", async (req, res) => {
-  const { taskId } = req.params;
-  try {
-    const task = await taskModel.findById(taskId);
-    if (!task) {
-      return res.status(404).send({ error: "Task not found" });
-    }
-    res.send(task);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: "Internal Server Error" });
-  }
-});
-
-taskRoute.get("/", async (req, res) => {
-  try {
-    const tasks = await taskModel.find({ authorID: req.body.authorID });
-    res.send(tasks);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: "Internal Server Error" });
-  }
-});
-
-taskRoute.patch("/update/:taskID", async (req, res) => {
-  const { taskID } = req.params;
-  try {
-    await taskModel.findByIdAndUpdate(taskID, req.body);
-    res.json({ msg: `The task with ID ${taskID} has been updated` });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: "Internal Server Error" });
-  }
-});
-
-taskRoute.delete("/delete/:taskID", async (req, res) => {
-  const { taskID } = req.params;
-  try {
-    await taskModel.findByIdAndDelete(taskID);
-    res.json({ msg: `The task with ID ${taskID} has been deleted` });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ err: "Internal Server Error" });
-  }
-});
-
-module.exports = {
-  taskRoute,
 };
+
+router.post("/createtask", authenticate, async (req, res) => {
+  try {
+    const task = new taskModel({
+      ...req.body,
+      user: req.user.authorID, 
+    });
+    const savedTask = await task.save();
+    res.status(201).json(savedTask);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.get("/get", authenticate, async (req, res) => {
+  try {
+    const tasks = await taskModel.find({ user: req.user.authorID }).populate("user");
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/:id", authenticate, async (req, res) => {
+  try {
+    const task = await taskModel.findOne({ _id: req.params.id, user: req.user.authorID }).populate("user");
+    if (!task) return res.status(404).json({ message: "Task not found" });
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/update/:id", authenticate, async (req, res) => {
+  try {
+    const updatedTask = await taskModel.findOneAndUpdate(
+      { _id: req.params.id, user: req.user.authorID },
+      req.body,
+      { new: true }
+    ).populate("user");
+    if (!updatedTask) return res.status(404).json({ message: "Task not found" });
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+router.delete("/delete/:id", authenticate, async (req, res) => {
+  try {
+    const deletedTask = await taskModel.findOneAndDelete({ _id: req.params.id, user: req.user.authorID });
+    if (!deletedTask) return res.status(404).json({ message: "Task not found" });
+    res.status(200).json({ message: "Task deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+module.exports = router;

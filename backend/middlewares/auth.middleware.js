@@ -1,26 +1,24 @@
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const auth = (req, res, next) => {
-  const token = req.headers.authorization;
-  if (token) {
-    try {
-      const decoded = jwt.verify(token.split(" ")[1], "masaiII");
 
-      if (decoded) {
-        req.body.authorID = decoded.authorID; //For -> products route
-        req.body.author = decoded.author;
-        // console.log("decoded", decoded);
-        next();
-      } else {
-        res.send({ msg: "please login " });
-      }
-    } catch (error) {
-      res.send({ msg: error.message });
-    }
-  } else {
-    res.send({ msg: "please login " });
+const authentication = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ error: "Please provide a valid token" });
   }
+
+  jwt.verify(token, process.env.SECRET_KEY, async function (err, decoded) {
+    if (err) {
+      console.error("Error verifying token:", err);
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    // console.log(decoded);
+
+    const userId = decoded.userId;
+    req.userId = userId;
+    console.log(userId);
+    next();
+  });
 };
 
-module.exports = {
-  auth,
-};
+module.exports = { authentication };

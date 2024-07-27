@@ -2,18 +2,23 @@ const express = require("express");
 const app = express();
 const { connection } = require("./db");
 const cors = require("cors");
+const { userRouter } = require("./router/user.route");
+const { route } = require("./router/task.route");
+const router = require("./router/task.route");
+const taskModel = require("./model/task.model");
+const adminroutes = require("./router/admin.route");
 app.use(cors());
 app.use(express.json());
 
-const { auth } = require("./middlewares/auth.middleware");
-const { userRouter } = require("./router/user.route");
-const { taskRoute } = require("./router/task.route");
 require("dotenv").config();
 
-
+app.use("/admin", adminroutes);
 app.use("/users", userRouter);
-app.use(auth);
-app.use("/tasks", taskRoute);
+app.use("/task", router);
+
+app.use("/", (req, res) => {
+  res.json({ msg: "welcom to task manager backend" });
+});
 
 app.listen(9090, async () => {
   try {
