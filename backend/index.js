@@ -20,10 +20,10 @@ app.use("/admin", adminroutes);
 app.use("/users", userRouter);
 app.use("/task", router);
 
-app.listen(9090, async () => {
+app.listen(3020, async () => {
   try {
     await connection;
-    console.log("Connection established port 9090");
+    console.log("Connection established port 3020");
   } catch (err) {
     console.log(err);
   }
