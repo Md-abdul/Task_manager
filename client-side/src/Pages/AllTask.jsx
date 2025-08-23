@@ -33,64 +33,69 @@ const AllTask = () => {
           No tasks available. Please create a new task.
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {tasks.map((task) => (
-            <div
-              key={task._id}
-              className="bg-clip-border rounded-xl bg-gradient-to-tr from-gray-700 to-gray-500 text-white shadow-gray-900/20 p-8"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-white-800 dark:text-gray-200">
-                  {task.title}
-                </h3>
-                <div className="flex space-x-2">
-                  <button
-                    className="text-blue-500 hover:text-blue-700 text-3xl"
-                    onClick={() => {
-                      setCurrentTask(task);
-                      setIsEditDialogOpen(true);
-                    }}
+        <div>
+          {/* <h1 className="text-2xl">All Projects</h1> */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {tasks.map((task) => (
+              <div
+                key={task._id}
+                className="bg-clip-border rounded-xl bg-gradient-to-tr from-gray-700 to-gray-500 text-white shadow-gray-900/20 p-8"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white-800 dark:text-gray-200">
+                    {task.title}
+                  </h3>
+                  <div className="flex space-x-2">
+                    <button
+                      className="text-blue-500 hover:text-blue-700 text-3xl"
+                      onClick={() => {
+                        setCurrentTask(task);
+                        setIsEditDialogOpen(true);
+                      }}
+                    >
+                      <FiEdit />
+                    </button>
+                    <button
+                      className="text-red-500 hover:text-red-700 text-3xl"
+                      onClick={() => {
+                        setCurrentTask(task);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                    >
+                      <MdDeleteForever />
+                    </button>
+                  </div>
+                </div>
+                <p className="mt-5 text-white-600 dark:text-white-400">
+                  {task.description}
+                </p>
+                <div className="mt-6 flex items-center justify-between">
+                  <span
+                    className={`text-xl text-bold font-medium ${
+                      task.priority === "high"
+                        ? "text-red-600"
+                        : "text-white-500"
+                    }`}
                   >
-                    <FiEdit />
-                  </button>
-                  <button
-                    className="text-red-500 hover:text-red-700 text-3xl"
-                    onClick={() => {
-                      setCurrentTask(task);
-                      setIsDeleteDialogOpen(true);
-                    }}
+                    {task.priority.charAt(0).toUpperCase() +
+                      task.priority.slice(1)}
+                  </span>
+                  <span className="text-sm text-white-500 dark:text-white-400">
+                    Due: {new Date(task.dueDate).toLocaleDateString()}
+                  </span>
+                  <span
+                    className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
+                      task.status === "completed"
+                        ? "bg-green-200 text-green-800"
+                        : "bg-yellow-200 text-yellow-800"
+                    }`}
                   >
-                    <MdDeleteForever />
-                  </button>
+                    {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+                  </span>
                 </div>
               </div>
-              <p className="mt-5 text-white-600 dark:text-white-400">
-                {task.description}
-              </p>
-              <div className="mt-6 flex items-center justify-between">
-                <span
-                  className={`text-xl text-bold font-medium ${
-                    task.priority === "high" ? "text-red-600" : "text-white-500"
-                  }`}
-                >
-                  {task.priority.charAt(0).toUpperCase() +
-                    task.priority.slice(1)}
-                </span>
-                <span className="text-sm text-white-500 dark:text-white-400">
-                  Due: {new Date(task.dueDate).toLocaleDateString()}
-                </span>
-                <span
-                  className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                    task.status === "completed"
-                      ? "bg-green-200 text-green-800"
-                      : "bg-yellow-200 text-yellow-800"
-                  }`}
-                >
-                  {task.status.charAt(0).toUpperCase() + task.status.slice(1)}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 

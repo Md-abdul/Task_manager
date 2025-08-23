@@ -7,15 +7,18 @@ const { route } = require("./router/task.route");
 const router = require("./router/task.route");
 const taskModel = require("./model/task.model");
 const adminroutes = require("./router/admin.route");
+const projectRoutes = require("./router/project.route");
 const port = 5050;
 app.use(cors());
 app.use(express.json());
 
 require("dotenv").config();
 
+app.use("/project", projectRoutes)
 app.use("/admin", adminroutes);
 app.use("/users", userRouter);
 app.use("/task", router);
+
 
 app.get("/", (req, res) => {
   res.send("welcome to task manager backend");

@@ -7,6 +7,7 @@ import AllTask from "../Pages/AllTask";
 import TaskForm from "../Pages/TaskForm";
 import AdminLogin from "../Pages/AdminLogin";
 import AdminDashboard from "../Pages/AdminDashboard";
+import Projects from "../Pages/Projects";
 
 const AllRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const AllRoutes = () => {
       <Route path="/taskform" element={<TaskForm/>}/>
       <Route path="/adminlogin" element={<AdminLogin/>}/>
       <Route path="/admindashboard" element={<AdminDashboard/>}/>
+      <Route path="/projects" element={<Projects/>}/>
     </Routes>
   );
 };
